@@ -31,9 +31,19 @@
 # Debug files
 *.dSYM/
 
+#
 # Orginal Files
+#
 
+#
 # Generated Files
+#
 apps/*/build
+
+#
+# Java compilation output
+#
+*.class
+*.jar
 
 
