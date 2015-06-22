@@ -11,7 +11,7 @@ There are 9 "Moles" (each of which is a tmote), one "GameCenter" (a tmote, BaseS
 ### Mole
 Mole receives signal from GameCenter and then turn on one of the LEDs to show that the Mole comes out of the hole. It will wait for the Gun to shoot. 
 ### GameCenter
-GameCenter
+GameCenter controls the game. It includes a tmote which is used to send command to Mole and receive data from mole, and a Server which is running on PC and get the data from 
 ### GunController
 GunController
 
