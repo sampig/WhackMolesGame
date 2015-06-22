@@ -32,40 +32,8 @@
 *.dSYM/
 
 # Orginal Files
-./AntiTheft/
-./Backup/
-./BaseStation/
-./BaseStation15.4/
-./Blink/
-./Blink2/
-./Blink3/
-./Blink4/
-./BlinkPrint/
-./bootstrap/
-./ButtonBlink/
-./CoapBlip/
-./Makefile
-./MultihopOscilloscope/
-./MultihopOscilloscopeLqi/
-./MViz/
-./Null/
-./Oscilloscope/
-./PacketReceptionRate/
-./Powerup/
-./PppRouter/
-./PPPSniffer/
-./QuizMaster/
-./QuizPlayer/
-./RadioCountToLeds/
-./RadioCountToLeds2/
-./RadioCountToLeds3/
-./RadioCountToLedsSimulate/
-./RadioSenseAll/
-./RadioSenseToLeds/
-./Sense/
-./TCPEcho/
-./tests/
-./tosthreads/
-./tutorials/
-./UDPEcho/
+
+# Generated Files
+apps/*/build
+
 
