@@ -1,5 +1,5 @@
 # README for WhackMolesGame-BaseStation
-Author/Contact: [Chenfeng ZHU](zhuchenf@gmail.com)
+Author/Contact: [Chenfeng ZHU](mailto:zhuchenf@gmail.com)
 
 ## Description:
 
