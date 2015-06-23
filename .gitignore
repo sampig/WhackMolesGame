@@ -38,7 +38,8 @@
 #
 # Generated Files
 #
-src/**/build/
+[Bb]uild*/
+#src/**/build/
 
 #
 # Java compilation output
