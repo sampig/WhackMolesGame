@@ -38,7 +38,7 @@
 #
 # Generated Files
 #
-apps/*/build
+src/apps/*/build
 
 #
 # Java compilation output
