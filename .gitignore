@@ -39,6 +39,7 @@
 # Generated Files
 #
 [Bb]uild*/
+[Bb]in/
 #src/**/build/
 
 #
