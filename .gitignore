@@ -30,3 +30,22 @@
 
 # Debug files
 *.dSYM/
+
+#
+# Orginal Files
+#
+
+#
+# Generated Files
+#
+[Bb]uild*/
+[Bb]in/
+#src/**/build/
+
+#
+# Java compilation output
+#
+*.class
+*.jar
+
+
