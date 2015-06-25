@@ -1,5 +1,5 @@
 # README for WhackMolesGame-Mole
-Author/Contact: [Emre Ozbas](mailto:emre@gmail.com), [Chenfeng ZHU](zhuchenf@gmail.com)
+Author/Contact: [Emre Ozbas](mailto:emre@gmail.com), [Chenfeng ZHU](mailto:zhuchenf@gmail.com)
 
 ## Description:
 
