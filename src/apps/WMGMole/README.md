@@ -1,5 +1,5 @@
 # README for WhackMolesGame-Mole
-Author/Contact: [Emre Ozbas](), [Chenfeng ZHU](zhuchenf@gmail.com)
+Author/Contact: [Emre Ozbas](mailto:emre@gmail.com), [Chenfeng ZHU](mailto:zhuchenf@gmail.com)
 
 ## Description:
 
@@ -13,6 +13,6 @@ this application sends. WMGMoleMsg.py is a Python class representing the message
 ## Known bugs/limitations:
 
 None.
-
+asdasd
 
 $Id: README.md,v 1.0 2015-06-22 $
