@@ -47,7 +47,7 @@ public class ServerUI extends JPanel {
 
     private JLabel statusBar;
 
-    private GameLevel level;
+    private GameLevel level = GameLevel.LEVEL_BEGINNER;
 
     private GameThread game;
     private String source = "serial@/dev/ttyUSB0:115200";
@@ -142,6 +142,10 @@ public class ServerUI extends JPanel {
         game = new GameThread(this, mif);
         Thread thread = new Thread(game);
         thread.start();
+    }
+
+    public void chooseLevel(GameLevel level) {
+        this.level = level;
     }
 
     public void stop() {
