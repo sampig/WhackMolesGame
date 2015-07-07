@@ -26,14 +26,15 @@ public class GameThread implements Runnable, MessageListener {
 
     @Override
     public void run() {
-        // for (int i = 0; i < totalTimes; i++) {
-        // try {
-        // Thread.sleep((long) (timeoutMole * 1000));
-        // Thread.sleep((long) (timeoutServer * 1000));
-        // } catch (InterruptedException e) {
-        // e.printStackTrace();
-        // }
-        // }
+        for (int i = 0; i < totalTimes; i++) {
+            try {
+                // Thread.sleep((long) (timeoutMole * 1000));
+                Thread.sleep((long) (timeoutServer * 1000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.sendConfiguration();
+        }
     }
 
     @Override
@@ -44,6 +45,17 @@ public class GameThread implements Runnable, MessageListener {
                 + ", Data=" + msg.get_data();
         server.getStatusPane().appendInfo(text);
         System.out.println(text);
+    }
+
+    public void sendConfiguration() {
+        GameMsg msg = new GameMsg();
+        try {
+            msg.set_type(1);
+            msg.set_data((short) timeoutMole);
+            moteIF.send(MoteIF.TOS_BCAST_ADDR, msg);
+            System.out.print("Sending COMMAND to serial port\n");
+        } catch (Exception ioexc) {
+        }
     }
 
 }
