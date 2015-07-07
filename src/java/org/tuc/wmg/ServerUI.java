@@ -42,7 +42,7 @@ public class ServerUI extends JPanel {
     private boolean isRunning = false;
 
     private JSplitPane mainPane;
-    private GameControllerPane controlPane;
+    private GameRankPane controlPane;
     private GameStatusPane statusPane;
 
     private JLabel statusBar;
@@ -53,7 +53,7 @@ public class ServerUI extends JPanel {
     private String source = "serial@/dev/ttyUSB0:115200";
 
     public ServerUI() {
-        controlPane = new GameControllerPane(this);
+        controlPane = new GameRankPane(this);
         statusPane = new GameStatusPane(this);
         mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, controlPane, statusPane);
         mainPane.setOneTouchExpandable(true);

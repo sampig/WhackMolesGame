@@ -77,6 +77,22 @@ public class ControlActions {
     }
 
     /**
+     * Action for Stopping Game.
+     */
+    public static class StopAction extends AbstractAction {
+
+        private static final long serialVersionUID = -6312794077163121939L;
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ServerUI server = getServer(e);
+            if (server != null) {
+                server.stop();
+            }
+        }
+
+    }
+    /**
      * Action for Exit.
      */
     public static class ExitAction extends AbstractAction {
