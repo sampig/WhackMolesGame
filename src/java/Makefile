@@ -10,4 +10,4 @@ org/tuc/wmg/GameMsg.java: ./WMGMessages.h
 	mig java -target=null -java-classname=org.tuc.wmg.GameMsg $< GameMsg -o $@
 
 clean:
-    rm -f *.class ./org/tuc/wmg/GameMsg.java
+	rm -f *.class ./org/tuc/wmg/GameMsg.java
