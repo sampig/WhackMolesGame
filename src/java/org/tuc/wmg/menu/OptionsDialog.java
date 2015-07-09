@@ -65,18 +65,22 @@ public class OptionsDialog extends JDialog implements ActionListener {
         levelPane.setLayout(new GridLayout(0, 2));
         JRadioButton beginButton = new JRadioButton(STR_BEGINNER);
         beginButton.setActionCommand(STR_BEGINNER);
+        beginButton.addActionListener(this);
         beginButton.setSelected(true);
         beginLabel = new JLabel("Total Times: " + GameLevel.LEVEL_BEGINNER.getTotalTimes()
                 + ", time moles: " + GameLevel.LEVEL_BEGINNER.getTimeoutMole()
                 + ", time server: " + GameLevel.LEVEL_BEGINNER.getTimeoutServer());
         JRadioButton midButton = new JRadioButton(STR_MEDIATE);
         midButton.setActionCommand(STR_MEDIATE);
+        midButton.addActionListener(this);
         midLabel = new JLabel("Total Times: " + GameLevel.LEVEL_MEDIATE.getTotalTimes());
         JRadioButton advButton = new JRadioButton(STR_ADVANCED);
         advButton.setActionCommand(STR_ADVANCED);
+        advButton.addActionListener(this);
         advLabel = new JLabel("Total Times: " + GameLevel.LEVEL_ADVANCED.getTotalTimes());
         JRadioButton custButton = new JRadioButton(STR_CUSTOM);
         custButton.setActionCommand(STR_CUSTOM);
+        custButton.addActionListener(this);
         ButtonGroup group = new ButtonGroup();
         group.add(beginButton);
         group.add(midButton);
@@ -108,6 +112,7 @@ public class OptionsDialog extends JDialog implements ActionListener {
                 server.setSource(source);
                 server.getStatusPane().updateSerialInfo(source);
                 server.setLevel(level);
+                server.getStatusPane().appendInfo("Change Game Level: " + level);
                 setVisible(false);
             }
         });
