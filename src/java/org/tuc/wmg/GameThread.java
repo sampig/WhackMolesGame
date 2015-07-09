@@ -74,19 +74,20 @@ public class GameThread implements Runnable, MessageListener {
             server.getStatusPane().appendInfo("Mole." + source + " came out.");
             return;
         } else if (type == 0x22) { // Result: 0-miss;1-hit
-            text += "Mole." + source + " stat: " + (data == 0x01 ? "hit" : "miss") + ".";
+            boolean stat = (data == 0x01);
+            text += "Mole." + source + " stat: " + (stat ? "hit" : "miss") + ".";
             server.getStatusPane().appendInfo(text);
-            if (data == 0x01) {
+            if (stat) {
                 hitTimes++;
             }
-            return;
         }
         // server.getStatusPane().appendInfo(text);
         if (type == 0x22 && currentTimes <= totalTimes) {
             this.sendMoleID();
             currentTimes++;
         } else {
-            ;
+            this.sendGameOver();
+            return;
         }
     }
 
