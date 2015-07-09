@@ -153,7 +153,7 @@ public class ServerUI extends JPanel {
         if (game != null) {
             Thread thread = new Thread(game);
             thread.interrupt();
-            Thread.currentThread().interrupt();
+            // Thread.currentThread().interrupt();
         }
     }
 

@@ -66,13 +66,13 @@ public class GameThread implements Runnable, MessageListener {
         int data = msg.get_data();
         String text = "Game Message received from Mole." + source + ": Type=" + type
                 + ", Data=" + data + ". ";
-        if (type == 0x11) { // ACK: ready
+        if (type == 0x11 && listMoles.size() < numMoles) { // ACK: ready
             if (!listMoles.contains(source)) {
                 text += "Mole." + source + " is ready.";
                 server.getStatusPane().appendInfo(text);
                 listMoles.add(source);
             }
-            if (listMoles.size() == numMoles) {
+            if (listMoles.size() >= numMoles) {
                 stat = GameStat.RUNNING;
                 server.getStatusPane().appendInfo("Game starts.");
                 if (timerWait != null && timerWait.isAlive()) {
@@ -110,9 +110,6 @@ public class GameThread implements Runnable, MessageListener {
             moteIF.send(MoteIF.TOS_BCAST_ADDR, msg);
             server.getStatusPane().appendInfo("Configurating... Wait...");
             server.getStatusPane().appendInfo("Game Level: " + level);
-            if (timerWait != null && timerWait.isAlive()) {
-                timerWait.interrupt();
-            }
             timerWait = new TimerThread(TimerType.CONFIG);
             timerWait.start();
         } catch (Exception ioexc) {
@@ -178,8 +175,6 @@ public class GameThread implements Runnable, MessageListener {
                     sendConfiguration();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                } finally {
-                    this.interrupt();
                 }
             }
         }
