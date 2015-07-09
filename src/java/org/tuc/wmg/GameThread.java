@@ -116,9 +116,9 @@ public class GameThread implements Runnable, MessageListener {
         int id = r.nextInt(numMoles);
         try {
             msg.set_type(0x21);
-            msg.set_data(id);
+            msg.set_data(listMoles.get(id));
             moteIF.send(MoteIF.TOS_BCAST_ADDR, msg);
-            server.getStatusPane().appendInfo("It is the turn of Mole." + id);
+            server.getStatusPane().appendInfo("It is the turn of Mole." + listMoles.get(id));
         } catch (Exception ioexc) {
         }
     }
