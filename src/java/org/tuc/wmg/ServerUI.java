@@ -27,6 +27,7 @@ import net.tinyos.util.PrintStreamMessenger;
 import org.tuc.wmg.menu.AboutDialog;
 import org.tuc.wmg.menu.ControlMenuBar;
 import org.tuc.wmg.menu.ControlToolBar;
+import org.tuc.wmg.menu.OptionsDialog;
 
 /**
  * ServerUI provides an interface to record the game.
@@ -150,7 +151,21 @@ public class ServerUI extends JPanel {
 
     public void stop() {
         if (game != null) {
+            Thread thread = new Thread(game);
+            thread.interrupt();
             Thread.currentThread().interrupt();
+        }
+    }
+
+    public void options() {
+        JFrame frame = (JFrame) SwingUtilities.windowForComponent(this);
+        if (frame != null) {
+            OptionsDialog options = new OptionsDialog(this, frame);
+            options.setModal(true);
+            int x = frame.getX() + (frame.getWidth() - options.getWidth()) / 2;
+            int y = frame.getY() + (frame.getHeight() - options.getHeight()) / 2;
+            options.setLocation(x, y);
+            options.setVisible(true);
         }
     }
 
@@ -173,15 +188,23 @@ public class ServerUI extends JPanel {
         }
     }
 
-    protected GameLevel getLevel() {
+    public void setLevel(GameLevel level) {
+        this.level = level;
+    }
+
+    public GameLevel getLevel() {
         return level;
     }
 
-    protected String getSource() {
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getSource() {
         return source;
     }
 
-    protected GameStatusPane getStatusPane() {
+    public GameStatusPane getStatusPane() {
         return statusPane;
     }
 

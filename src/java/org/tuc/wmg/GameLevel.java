@@ -2,6 +2,12 @@ package org.tuc.wmg;
 
 import java.util.Random;
 
+/**
+ * Game's Level.
+ * 
+ * @author Chenfeng ZHU
+ *
+ */
 public enum GameLevel {
 
     LEVEL_BEGINNER, LEVEL_MEDIATE, LEVEL_ADVANCED, LEVEL_CUSTOM;
@@ -10,6 +16,7 @@ public enum GameLevel {
     private int missTimes = 5;
     private double timeoutMole = 5;
     private double timeoutServer = 5;
+    private int numMoles = 9;
 
     private GameLevel() {
     }
@@ -20,6 +27,11 @@ public enum GameLevel {
         this.timeoutServer = timeoutServer;
     }
 
+    /**
+     * Get a random Level.
+     * 
+     * @return
+     */
     public static GameLevel getRandomInstance() {
         Random r = new Random();
         switch (r.nextInt(3)) {
@@ -33,22 +45,28 @@ public enum GameLevel {
         return LEVEL_BEGINNER;
     }
 
+    /**
+     * According to the level, Set the values.
+     */
     public void init() {
         switch (this) {
         case LEVEL_BEGINNER:
             totalTimes = 10;
             timeoutMole = 5;
             timeoutServer = 5;
+            numMoles = 2;
             break;
         case LEVEL_MEDIATE:
             totalTimes = 20;
             timeoutMole = 4;
             timeoutServer = 4;
+            numMoles = 3;
             break;
         case LEVEL_ADVANCED:
             totalTimes = 30;
-            timeoutMole = 3;
-            timeoutServer = 3;
+            timeoutMole = 2;
+            timeoutServer = 2;
+            numMoles = 4;
             break;
         case LEVEL_CUSTOM:
             break;
@@ -57,31 +75,72 @@ public enum GameLevel {
         }
     }
 
-    public GameLevel setCustom(int totalTimes, double timeoutMole, double timeoutServer) {
+    /**
+     * Set the custom level.
+     * 
+     * @param totalTimes
+     * @param timeoutMole
+     * @param timeoutServer
+     * @param numMoles
+     * @return
+     */
+    public GameLevel setCustom(int totalTimes, double timeoutMole, double timeoutServer,
+            int numMoles) {
         this.totalTimes = totalTimes;
         this.timeoutMole = timeoutMole;
         this.timeoutServer = timeoutServer;
+        this.numMoles = numMoles;
         return LEVEL_CUSTOM;
     }
 
+    /**
+     * Get the total times.
+     * 
+     * @return
+     */
     public int getTotalTimes() {
         this.init();
         return totalTimes;
     }
 
+    /**
+     * Get the miss times.
+     * 
+     * @return
+     */
     public int getMissTimes() {
         this.init();
         return missTimes;
     }
 
+    /**
+     * Get the timeout for mole.
+     * 
+     * @return
+     */
     public double getTimeoutMole() {
         this.init();
         return timeoutMole;
     }
 
+    /**
+     * Get the timeout for server.
+     * 
+     * @return
+     */
     public double getTimeoutServer() {
         this.init();
         return timeoutServer;
+    }
+
+    /**
+     * Get the number of moles.
+     * 
+     * @return
+     */
+    public int getNumMoles() {
+        this.init();
+        return numMoles;
     }
 
 }

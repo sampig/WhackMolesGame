@@ -14,6 +14,12 @@ public class GameThread implements Runnable, MessageListener {
         CONFIGURE, RUNNING, OVER
     }
 
+    public enum TimerType {
+        CONFIG, RUNNING
+    }
+
+    public final static int TIMEOUT_WAITING = 2;
+
     private ServerUI server;
     private GameLevel level = GameLevel.LEVEL_BEGINNER;
     private int totalTimes = 10;
@@ -21,6 +27,8 @@ public class GameThread implements Runnable, MessageListener {
     private double timeoutServer = 5;
     private int numMoles = 4;
     private List<Integer> listMoles = new ArrayList<Integer>(0);
+
+    private TimerThread timerWait;
 
     private GameStat stat = GameStat.CONFIGURE;
 
@@ -67,6 +75,9 @@ public class GameThread implements Runnable, MessageListener {
             if (listMoles.size() == numMoles) {
                 stat = GameStat.RUNNING;
                 server.getStatusPane().appendInfo("Game starts.");
+                if (timerWait != null && timerWait.isAlive()) {
+                    timerWait.interrupt();
+                }
                 this.sendMoleID();
             }
             return;
@@ -99,6 +110,11 @@ public class GameThread implements Runnable, MessageListener {
             moteIF.send(MoteIF.TOS_BCAST_ADDR, msg);
             server.getStatusPane().appendInfo("Configurating... Wait...");
             server.getStatusPane().appendInfo("Game Level: " + level);
+            if (timerWait != null && timerWait.isAlive()) {
+                timerWait.interrupt();
+            }
+            timerWait = new TimerThread(TimerType.CONFIG);
+            timerWait.start();
         } catch (Exception ioexc) {
         }
     }
@@ -120,6 +136,7 @@ public class GameThread implements Runnable, MessageListener {
             msg.set_data(listMoles.get(id));
             moteIF.send(MoteIF.TOS_BCAST_ADDR, msg);
             server.getStatusPane().appendInfo("It is the turn of Mole." + listMoles.get(id));
+            server.getStatusPane().freshGamepane(id);
         } catch (Exception ioexc) {
         }
     }
@@ -140,6 +157,33 @@ public class GameThread implements Runnable, MessageListener {
             server.getStatusPane().appendInfo(text.toString());
         } catch (Exception ioexc) {
         }
+    }
+
+    public class TimerThread extends Thread {
+
+        private TimerType type = TimerType.CONFIG;
+
+        public TimerThread(TimerType type) {
+            this.type = type;
+        }
+
+        public TimerType getType() {
+            return type;
+        }
+
+        public void run() {
+            if (type == TimerType.CONFIG) {
+                try {
+                    Thread.sleep((long) (TIMEOUT_WAITING * 1000));
+                    sendConfiguration();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    this.interrupt();
+                }
+            }
+        }
+
     }
 
 }

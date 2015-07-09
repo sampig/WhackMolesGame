@@ -2,6 +2,9 @@ package org.tuc.wmg;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -13,15 +16,21 @@ public class GameStatusPane extends JPanel {
 
     private static final long serialVersionUID = 1935065644500091308L;
 
+    private ServerUI server;
     private JLabel serialInfo;
-    private JScrollPane serialPane, gamePane, infoPane;
+    private JPanel serialPane, gamePane;
+    private JScrollPane infoPane;
     private JTextArea infoTextArea;
 
+    private List<JLabel> listMoles = new ArrayList<>(0);
+
     public GameStatusPane(ServerUI server) {
+        this.server = server;
         serialInfo = new JLabel();
         serialInfo.setText(server.getSource());
-        serialPane = new JScrollPane(serialInfo);
-        gamePane = new JScrollPane();
+        serialPane = new JPanel();
+        serialPane.add(serialInfo);
+        initGamepane();
         infoTextArea = new JTextArea();
         infoTextArea.setRows(10);
         infoPane = new JScrollPane(infoTextArea);
@@ -39,6 +48,28 @@ public class GameStatusPane extends JPanel {
 
     public void updateSerialInfo(String text) {
         serialInfo.setText(text);
+    }
+
+    public void initGamepane() {
+        gamePane = new JPanel();
+        GridLayout layout = new GridLayout(0, 3);
+        gamePane.setLayout(layout);
+        int num = server.getLevel().getNumMoles();
+        for (int i = 0; i < num; i++) {
+            JLabel label = new JLabel("Mole." + i);
+            listMoles.add(label);
+            gamePane.add(label);
+        }
+    }
+
+    public void freshGamepane(int i) {
+        for (JLabel label : listMoles) {
+            if (label == listMoles.get(i)) {
+                label.setText("*** Mole." + i + " ***");
+            } else {
+                label.setText("Mole." + i);
+            }
+        }
     }
 
     public void appendInfo(String text) {
