@@ -140,6 +140,16 @@ public class GameThread implements Runnable, MessageListener {
         }
     }
 
+    public void sendStatReply(int source) {
+        GameMsg msg = new GameMsg();
+        try {
+            msg.set_type(0x14);
+            msg.set_data(source);
+            moteIF.send(source, msg);
+        } catch (Exception ioexc) {
+        }
+    }
+
     public void sendGameOver() {
         GameMsg msg = new GameMsg();
         StringBuffer text = new StringBuffer();
