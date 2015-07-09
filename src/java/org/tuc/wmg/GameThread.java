@@ -18,7 +18,7 @@ public class GameThread implements Runnable, MessageListener {
         CONFIG, RUNNING
     }
 
-    public final static int TIMEOUT_WAITING = 2;
+    public final static int TIMEOUT_WAITING = 5;
 
     private ServerUI server;
     private GameLevel level = GameLevel.LEVEL_BEGINNER;
@@ -64,11 +64,11 @@ public class GameThread implements Runnable, MessageListener {
         int source = message.getSerialPacket().get_header_src();
         int type = msg.get_type();
         int data = msg.get_data();
-        String text = "Game Message received from Mole." + source + ": Type=" + type
-                + ", Data=" + data + ". ";
+        String text = "(Msg received from Mole." + source + ": Type=" + type + ", Data="
+                + data + ".) ";
         if (type == 0x11 && listMoles.size() < numMoles) { // ACK: ready
             if (!listMoles.contains(source)) {
-                text += "Mole." + source + " is ready.";
+                text = "Mole." + source + " is ready. " + text;
                 server.getStatusPane().appendInfo(text);
                 listMoles.add(source);
             }
@@ -82,11 +82,11 @@ public class GameThread implements Runnable, MessageListener {
             }
             return;
         } else if (type == 0x13) { // ACK: myTurn
-            server.getStatusPane().appendInfo("Mole." + source + " came out.");
+            server.getStatusPane().appendInfo("Mole." + source + " came out. " + text);
             return;
         } else if (type == 0x22) { // Result: 0-miss;1-hit
             boolean stat = (data == 0x01);
-            text += "Mole." + source + " stat: " + (stat ? "hit" : "miss") + ".";
+            text = "Mole." + source + " stat: " + (stat ? "hit" : "miss") + ". " + text;
             server.getStatusPane().appendInfo(text);
             if (stat) {
                 hitTimes++;
@@ -172,6 +172,7 @@ public class GameThread implements Runnable, MessageListener {
             if (type == TimerType.CONFIG) {
                 try {
                     Thread.sleep((long) (TIMEOUT_WAITING * 1000));
+                    server.getStatusPane().appendInfo("No repsponse. Send config again.");
                     sendConfiguration();
                 } catch (InterruptedException e) {
                     e.printStackTrace();

@@ -110,9 +110,10 @@ public class OptionsDialog extends JDialog implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 String source = sourceTF.getText();
                 server.setSource(source);
-                server.getStatusPane().updateSerialInfo(source);
+                server.getStatusPane().updateSourceInfo(source);
                 server.setLevel(level);
                 server.getStatusPane().appendInfo("Change Game Level: " + level);
+                server.getStatusPane().initGamepane();
                 setVisible(false);
             }
         });

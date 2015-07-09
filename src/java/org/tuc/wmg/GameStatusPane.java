@@ -17,8 +17,8 @@ public class GameStatusPane extends JPanel {
     private static final long serialVersionUID = 1935065644500091308L;
 
     private ServerUI server;
-    private JLabel serialInfo;
-    private JPanel serialPane, gamePane;
+    private JLabel sourceInfo;
+    private JPanel sourcePane, gamePane;
     private JScrollPane infoPane;
     private JTextArea infoTextArea;
 
@@ -26,10 +26,10 @@ public class GameStatusPane extends JPanel {
 
     public GameStatusPane(ServerUI server) {
         this.server = server;
-        serialInfo = new JLabel();
-        serialInfo.setText(server.getSource());
-        serialPane = new JPanel();
-        serialPane.add(serialInfo);
+        sourceInfo = new JLabel();
+        sourceInfo.setText(server.getSource());
+        sourcePane = new JPanel();
+        sourcePane.add(sourceInfo);
         initGamepane();
         infoTextArea = new JTextArea();
         infoTextArea.setRows(10);
@@ -41,13 +41,18 @@ public class GameStatusPane extends JPanel {
                         BorderFactory.createTitledBorder("Information:"),
                         BorderFactory.createEmptyBorder(1, 1, 1, 1)), infoPane.getBorder()));
         setLayout(new BorderLayout());
-        add(serialPane, BorderLayout.NORTH);
+        add(sourcePane, BorderLayout.NORTH);
         add(gamePane, BorderLayout.CENTER);
         add(infoPane, BorderLayout.SOUTH);
     }
 
-    public void updateSerialInfo(String text) {
-        serialInfo.setText(text);
+    /**
+     * Update the source.
+     * 
+     * @param text
+     */
+    public void updateSourceInfo(String text) {
+        sourceInfo.setText(text);
     }
 
     public void initGamepane() {
@@ -62,9 +67,10 @@ public class GameStatusPane extends JPanel {
         }
     }
 
-    public void freshGamepane(int i) {
-        for (JLabel label : listMoles) {
-            if (label == listMoles.get(i)) {
+    public void freshGamepane(int num) {
+        for (int i = 0; i < listMoles.size(); i++) {
+            JLabel label = listMoles.get(i);
+            if (i == num) {
                 label.setText("*** Mole." + i + " ***");
             } else {
                 label.setText("Mole." + i);
@@ -72,6 +78,11 @@ public class GameStatusPane extends JPanel {
         }
     }
 
+    /**
+     * Update the Information.
+     * 
+     * @param text
+     */
     public void appendInfo(String text) {
         infoTextArea.append(text + "\n");
     }
