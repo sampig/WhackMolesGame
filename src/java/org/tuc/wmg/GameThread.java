@@ -19,7 +19,7 @@ public class GameThread implements Runnable, MessageListener {
     private int totalTimes = 10;
     private double timeoutMole = 5;
     private double timeoutServer = 5;
-    private int numMoles = 9;
+    private int numMoles = 4;
     private List<Integer> listMoles = new ArrayList<Integer>(0);
 
     private GameStat stat = GameStat.CONFIGURE;
@@ -61,21 +61,27 @@ public class GameThread implements Runnable, MessageListener {
         if (type == 0x11) { // ACK: ready
             if (!listMoles.contains(source)) {
                 text += "Mole." + source + " is ready.";
+                server.getStatusPane().appendInfo(text);
                 listMoles.add(source);
             }
             if (listMoles.size() == numMoles) {
                 stat = GameStat.RUNNING;
+                server.getStatusPane().appendInfo("Game starts.");
                 this.sendMoleID();
             }
+            return;
         } else if (type == 0x13) { // ACK: myTurn
             server.getStatusPane().appendInfo("Mole." + source + " came out.");
+            return;
         } else if (type == 0x22) { // Result: 0-miss;1-hit
             text += "Mole." + source + " stat: " + (data == 0x01 ? "hit" : "miss") + ".";
+            server.getStatusPane().appendInfo(text);
             if (data == 0x01) {
                 hitTimes++;
             }
+            return;
         }
-        server.getStatusPane().appendInfo(text);
+        // server.getStatusPane().appendInfo(text);
         if (type == 0x22 && currentTimes <= totalTimes) {
             this.sendMoleID();
             currentTimes++;
@@ -87,14 +93,18 @@ public class GameThread implements Runnable, MessageListener {
     public void sendConfiguration() {
         GameMsg msg = new GameMsg();
         try {
-            msg.set_type(1);
+            msg.set_type(0x01);
             msg.set_data((int) timeoutMole);
             moteIF.send(MoteIF.TOS_BCAST_ADDR, msg);
             server.getStatusPane().appendInfo("Configurating... Wait...");
+            server.getStatusPane().appendInfo("Game Level: " + level);
         } catch (Exception ioexc) {
         }
     }
 
+    /**
+     * Choose one of the moles.
+     */
     public void sendMoleID() {
         try {
             Thread.sleep((long) (timeoutServer * 1000));
