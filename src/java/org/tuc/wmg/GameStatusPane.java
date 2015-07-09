@@ -24,12 +24,13 @@ public class GameStatusPane extends JPanel {
 
     private List<JLabel> listMoles = new ArrayList<>(0);
 
-    public GameStatusPane(ServerUI server) {
+    public GameStatusPane(final ServerUI server) {
         this.server = server;
         sourceInfo = new JLabel();
         sourceInfo.setText(server.getSource());
         sourcePane = new JPanel();
         sourcePane.add(sourceInfo);
+        gamePane = new JPanel();
         initGamepane();
         infoTextArea = new JTextArea();
         infoTextArea.setRows(10);
@@ -56,7 +57,8 @@ public class GameStatusPane extends JPanel {
     }
 
     public void initGamepane() {
-        gamePane = new JPanel();
+        listMoles.clear();
+        gamePane.removeAll();
         GridLayout layout = new GridLayout(0, 3);
         gamePane.setLayout(layout);
         int num = server.getLevel().getNumMoles();
@@ -65,6 +67,8 @@ public class GameStatusPane extends JPanel {
             listMoles.add(label);
             gamePane.add(label);
         }
+        gamePane.revalidate();
+        gamePane.repaint();
     }
 
     public void freshGamepane(int num) {
