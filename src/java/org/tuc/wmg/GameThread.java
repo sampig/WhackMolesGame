@@ -43,6 +43,7 @@ public class GameThread implements Runnable, MessageListener {
         totalTimes = level.getTotalTimes();
         timeoutMole = level.getTimeoutMole();
         timeoutServer = level.getTimeoutServer();
+        numMoles = level.getNumMoles();
         this.moteIF = moteIF;
         this.moteIF.registerListener(new GameMsg(), this);
     }
@@ -103,6 +104,7 @@ public class GameThread implements Runnable, MessageListener {
     }
 
     public void sendConfiguration() {
+        listMoles.clear();
         GameMsg msg = new GameMsg();
         try {
             msg.set_type(0x01);
