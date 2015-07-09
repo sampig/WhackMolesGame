@@ -86,6 +86,7 @@ public class GameThread implements Runnable, MessageListener {
             server.getStatusPane().appendInfo("Mole." + source + " came out. " + text);
             return;
         } else if (type == 0x22) { // Result: 0-miss;1-hit
+            this.sendStatReply(source);
             boolean stat = (data == 0x01);
             text = "Mole." + source + " stat: " + (stat ? "hit" : "miss") + ". " + text;
             server.getStatusPane().appendInfo(text);
