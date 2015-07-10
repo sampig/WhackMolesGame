@@ -43,20 +43,20 @@ public class ServerUI extends JPanel {
     private boolean isRunning = false;
 
     private JSplitPane mainPane;
-    private GameRankPane controlPane;
+    private GameRankPane rankPane;
     private GameStatusPane statusPane;
-
     private JLabel statusBar;
 
     private GameLevel level = GameLevel.LEVEL_BEGINNER;
 
     private GameThread game;
     private String source = "serial@/dev/ttyUSB0:115200";
+    private String playerName;
 
     public ServerUI() {
-        controlPane = new GameRankPane(this);
+        rankPane = new GameRankPane(this);
         statusPane = new GameStatusPane(this);
-        mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, controlPane, statusPane);
+        mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, rankPane, statusPane);
         mainPane.setOneTouchExpandable(true);
         mainPane.setDividerLocation(200);
         mainPane.setDividerSize(6);
@@ -202,6 +202,18 @@ public class ServerUI extends JPanel {
 
     public String getSource() {
         return source;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public GameRankPane getRankPane() {
+        return rankPane;
     }
 
     public GameStatusPane getStatusPane() {

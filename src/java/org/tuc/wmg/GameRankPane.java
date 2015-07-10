@@ -25,21 +25,34 @@ public class GameRankPane extends JScrollPane {
     }
 
     public void init() {
-        setRank.add(new Rank("Test1", Math.random()));
-        setRank.add(new Rank("Test2", Math.random()));
-        setRank.add(new Rank("Test3", Math.random()));
+        setRank.add(new Rank("Demo1", Math.random()));
+        setRank.add(new Rank("Demo2", Math.random()));
+        setRank.add(new Rank("Demo3", Math.random()));
         listRank.setListData(setRank.toArray());
     }
 
-    public void insertNewResult(String name, double result) {
-        Rank rank = new Rank(name, result);
+    public void insertNewResult(Rank rank) {
         setRank.add(rank);
         listRank.setListData(setRank.toArray());
     }
 
+    public void insertNewResult(String name, double result, int hitTimes, int totalTimes) {
+        Rank rank = new Rank(name, result, hitTimes, totalTimes);
+        setRank.add(rank);
+        listRank.setListData(setRank.toArray());
+    }
+
+    /**
+     * Record.
+     * 
+     * @author Chenfeng ZHU
+     *
+     */
     public class Rank implements Comparable<Rank> {
         private String name;
         private double result;
+        private int hitTimes;
+        private int totalTimes;
         private int id = 0;
 
         public Rank() {
@@ -47,8 +60,17 @@ public class GameRankPane extends JScrollPane {
         }
 
         public Rank(String name, double result) {
+            super();
             this.name = name;
             this.result = result;
+        }
+
+        public Rank(String name, double result, int hitTimes, int totalTimes) {
+            super();
+            this.name = name;
+            this.result = result;
+            this.hitTimes = hitTimes;
+            this.totalTimes = totalTimes;
         }
 
         public String getName() {
@@ -65,6 +87,22 @@ public class GameRankPane extends JScrollPane {
 
         public void setResult(double result) {
             this.result = result;
+        }
+
+        public int getHitTimes() {
+            return hitTimes;
+        }
+
+        public void setHitTimes(int hitTimes) {
+            this.hitTimes = hitTimes;
+        }
+
+        public int getTotalTimes() {
+            return totalTimes;
+        }
+
+        public void setTotalTimes(int totalTimes) {
+            this.totalTimes = totalTimes;
         }
 
         @Override

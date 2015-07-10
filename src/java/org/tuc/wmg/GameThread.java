@@ -8,6 +8,11 @@ import net.tinyos.message.Message;
 import net.tinyos.message.MessageListener;
 import net.tinyos.message.MoteIF;
 
+/**
+ * 
+ * @author Chenfeng ZHU
+ *
+ */
 public class GameThread implements Runnable, MessageListener {
 
     public enum GameStat {
@@ -77,7 +82,10 @@ public class GameThread implements Runnable, MessageListener {
                 stat = GameStat.RUNNING;
                 server.getStatusPane().appendInfo("Game starts.");
                 if (timerWait != null && timerWait.isAlive()) {
-                    timerWait.interrupt();
+                    try {
+                        timerWait.interrupt();
+                    } catch (Exception e) {
+                    }
                 }
                 this.sendMoleID();
             }
@@ -153,13 +161,15 @@ public class GameThread implements Runnable, MessageListener {
 
     public void sendGameOver() {
         GameMsg msg = new GameMsg();
+        double result = (hitTimes * 1.0 / totalTimes);
         StringBuffer text = new StringBuffer();
-        text.append("**********\n");
-        text.append("Game Over.\n");
+        text.append("*********************\n");
+        text.append("***** Game Over *****\n");
+        text.append(server.getPlayerName() + "\'s result: \n");
         text.append("Game Level: " + server.getLevel() + ".\n");
         text.append("Total Times: " + totalTimes + "\n");
         text.append("Hit Times: " + hitTimes + "\n");
-        text.append("Result: " + (hitTimes * 1.0 / totalTimes) + "\n");
+        text.append("Result: " + result + "\n");
         try {
             msg.set_type(0xFF);
             msg.set_data(0x00);
@@ -167,6 +177,8 @@ public class GameThread implements Runnable, MessageListener {
             server.getStatusPane().appendInfo(text.toString());
         } catch (Exception ioexc) {
         }
+        server.getRankPane().insertNewResult(server.getPlayerName(), result, hitTimes,
+                totalTimes);
     }
 
     public class TimerThread extends Thread {
