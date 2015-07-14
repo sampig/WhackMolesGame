@@ -1,7 +1,8 @@
 package org.tuc.wmg;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JList;
@@ -11,12 +12,12 @@ public class GameRankPane extends JScrollPane {
 
     private static final long serialVersionUID = -4048211434815208714L;
 
-    private JList<Object> listRank;
-    private Set<Rank> setRank = new HashSet<Rank>(0);
+    private JList<Object> jlistRank;
+    private List<Rank> listRank = new ArrayList<Rank>(0);
 
     public GameRankPane(ServerUI server) {
-        listRank = new JList<Object>();
-        setViewportView(listRank);
+        jlistRank = new JList<Object>();
+        setViewportView(jlistRank);
         setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder("Rank:"),
@@ -25,21 +26,22 @@ public class GameRankPane extends JScrollPane {
     }
 
     public void init() {
-        setRank.add(new Rank("Demo1", Math.random()));
-        setRank.add(new Rank("Demo2", Math.random()));
-        setRank.add(new Rank("Demo3", Math.random()));
-        listRank.setListData(setRank.toArray());
+        listRank.add(new Rank("Demo1", Math.random()));
+        listRank.add(new Rank("Demo2", Math.random()));
+        listRank.add(new Rank("Demo3", Math.random()));
+        Collections.sort(listRank,Collections.reverseOrder());
+        jlistRank.setListData(listRank.toArray());
     }
 
     public void insertNewResult(Rank rank) {
-        setRank.add(rank);
-        listRank.setListData(setRank.toArray());
+        listRank.add(rank);
+        Collections.sort(listRank,Collections.reverseOrder());
+        jlistRank.setListData(listRank.toArray());
     }
 
     public void insertNewResult(String name, double result, int hitTimes, int totalTimes) {
         Rank rank = new Rank(name, result, hitTimes, totalTimes);
-        setRank.add(rank);
-        listRank.setListData(setRank.toArray());
+        this.insertNewResult(rank);
     }
 
     /**

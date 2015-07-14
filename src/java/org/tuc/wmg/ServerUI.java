@@ -99,6 +99,8 @@ public class ServerUI extends JPanel {
 			title = "Whack Moles Game";
 			if (isRunning) {
 				title += " - running";
+			} else {
+				title += " - stopped";
 			}
 			frame.setTitle(title);
 		}
@@ -152,6 +154,9 @@ public class ServerUI extends JPanel {
 		if (phoenixSource != null) {
 			phoenixSource.shutdown();
 		}
+		isRunning = false;
+		this.updateTitle();
+		updateStatusBar("Stopped");
 		if (game != null) {
 			Thread thread = new Thread(game);
 			thread.interrupt();
