@@ -90,13 +90,15 @@ public class GameThread implements Runnable, MessageListener {
 			if (listMoles.size() >= numMoles) {
 				stat = GameStat.RUNNING;
 				server.getStatusPane().appendInfo("Game starts.");
+				server.getStatusPane().appendInfo(level.getDetail());
 				this.sendMoleID();
 			}
 			return;
 		} else if (type == 0x13) { // ACK: myTurn
 			server.getStatusPane().appendInfo("Mole." + source + " came out. " + text);
 			return;
-		} else if (type == 0x22 && stat == GameStat.RUNNING) { // Result: 0-miss;1-hit
+		} else if (type == 0x22 && stat == GameStat.RUNNING) { // Result:
+																// 0-miss;1-hit
 			this.sendStatReply(source);
 			boolean stat = (data == 0x01);
 			text = "Mole." + source + " stat: " + (stat ? "hit" : "miss") + ". " + text;

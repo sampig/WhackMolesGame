@@ -19,15 +19,16 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import net.tinyos.message.MoteIF;
-import net.tinyos.packet.BuildSource;
-import net.tinyos.packet.PhoenixSource;
-import net.tinyos.util.PrintStreamMessenger;
-
 import org.tuc.wmg.menu.AboutDialog;
 import org.tuc.wmg.menu.ControlMenuBar;
 import org.tuc.wmg.menu.ControlToolBar;
 import org.tuc.wmg.menu.OptionsDialog;
+import org.tuc.wmg.utils.CheckMolesUtil;
+
+import net.tinyos.message.MoteIF;
+import net.tinyos.packet.BuildSource;
+import net.tinyos.packet.PhoenixSource;
+import net.tinyos.util.PrintStreamMessenger;
 
 /**
  * ServerUI provides an interface to record the game.
@@ -176,6 +177,11 @@ public class ServerUI extends JPanel {
 			options.setLocation(x, y);
 			options.setVisible(true);
 		}
+	}
+	
+	public void checkMoles() {
+		CheckMolesUtil cm = new CheckMolesUtil(this);
+		cm.sendRequest();
 	}
 
 	public void about() {
