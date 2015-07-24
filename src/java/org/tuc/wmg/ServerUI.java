@@ -52,7 +52,7 @@ public class ServerUI extends JPanel {
 
 	private GameThread game;
 	private String source = "serial@/dev/ttyUSB0:115200";
-	private String playerName;
+	private String playerName = "Player";
 
 	private PhoenixSource phoenixSource;
 
@@ -134,8 +134,20 @@ public class ServerUI extends JPanel {
 
 	public void start() {
 		isRunning = true;
+		// change the UI.
 		updateTitle();
 		updateStatusBar("Running");
+		// pop up a new dialog.
+		JFrame frame = (JFrame) SwingUtilities.windowForComponent(this);
+		if (frame != null) {
+			GamePlayWindow playDialog = new GamePlayWindow(this, frame);
+			playDialog.setModal(true);
+			int x = frame.getX() + (frame.getWidth() - playDialog.getWidth()) / 2;
+			int y = frame.getY() + (frame.getHeight() - playDialog.getHeight()) / 2;
+			playDialog.setLocation(x, y);
+			playDialog.setVisible(true);
+		}
+		// start receiving and sending messages.
 		if (source == null) {
 			phoenixSource = BuildSource.makePhoenix(PrintStreamMessenger.err);
 		} else {

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -70,7 +71,13 @@ public class GameStatusPane extends JPanel {
 		gamePane.setLayout(layout);
 		int num = server.getLevel().getNumMoles();
 		for (int i = 0; i < num; i++) {
-			JLabel label = new JLabel("Mole." + i);
+			java.net.URL imgURL = GameStatusPane.class.getClassLoader()
+					.getResource("resources/images/circle_red_48px.png");
+			ImageIcon iconRed = new ImageIcon(imgURL);
+			JLabel label = new JLabel("Mole." + i, JLabel.CENTER);
+			label.setIcon(iconRed);
+			label.setVerticalTextPosition(JLabel.BOTTOM);
+			label.setHorizontalTextPosition(JLabel.CENTER);
 			listMoles.add(label);
 			gamePane.add(label);
 		}
@@ -84,12 +91,23 @@ public class GameStatusPane extends JPanel {
 			if (i == num) {
 				if (hit) {
 					label.setText("<<< Mole." + i + " >>>");
+					java.net.URL imgURL = GameStatusPane.class.getClassLoader()
+							.getResource("resources/images/circle_green_48px.png");
+					ImageIcon iconBlue = new ImageIcon(imgURL);
+					label.setIcon(iconBlue);
 				} else {
-					label.setText(
-							"<html>***************<br/>" + "*** Mole." + i + " ***<br/>" + "***************</html>");
+					label.setText("*** Mole." + i + " ***");
+					java.net.URL imgURL = GameStatusPane.class.getClassLoader()
+							.getResource("resources/images/circle_green_48px.png");
+					ImageIcon iconGreen = new ImageIcon(imgURL);
+					label.setIcon(iconGreen);
 				}
 			} else {
 				label.setText("Mole." + i);
+				java.net.URL imgURL = GameStatusPane.class.getClassLoader()
+						.getResource("resources/images/circle_red_48px.png");
+				ImageIcon iconRed = new ImageIcon(imgURL);
+				label.setIcon(iconRed);
 			}
 		}
 	}
