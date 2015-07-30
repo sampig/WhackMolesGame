@@ -32,6 +32,7 @@ public class GameThread implements Runnable, MessageListener {
 	private double timeoutServer = 5;
 	private int numMoles = 4;
 	private List<Integer> listMoles = new ArrayList<Integer>(0);
+	private boolean gunReady = true;
 
 	private TimerThread timerWait;
 
@@ -39,6 +40,7 @@ public class GameThread implements Runnable, MessageListener {
 
 	private int currentTimes = 1;
 	private int hitTimes = 0;
+	private int totalPressedTime = 0;
 
 	private MoteIF moteIF;
 
@@ -48,7 +50,7 @@ public class GameThread implements Runnable, MessageListener {
 		totalTimes = level.getTotalTimes();
 		timeoutMole = level.getTimeoutMole();
 		timeoutServer = level.getTimeoutServer();
-		numMoles = level.getNumMoles();
+		numMoles = server.getNumMoles();
 		this.moteIF = moteIF;
 		this.moteIF.registerListener(new GameMsg(), this);
 		this.init();
@@ -76,22 +78,28 @@ public class GameThread implements Runnable, MessageListener {
 		if (stat == GameStat.OVER) {
 			return;
 		}
+		if (!(message instanceof GameMsg)) {
+			return;
+		}
 		GameMsg msg = (GameMsg) message;
 		int source = message.getSerialPacket().get_header_src();
 		int type = msg.get_type();
 		int data = msg.get_data();
 		String text = "(Msg received from Mole." + source + ": Type=" + type + ", Data=" + data + ".) ";
-		if (type == 0x11 && listMoles.size() < numMoles) { // ACK: ready
-			if (!listMoles.contains(source)) {
-				text = "Mole." + source + " is ready. " + text;
-				server.getStatusPane().appendInfo(text);
-				listMoles.add(source);
+		if (stat == GameStat.CONFIGURE && type == 0x11) { // ACK: ready
+			// listMoles.size() < numMoles
+			if (data == 0x01) {
+				if (!listMoles.contains(source)) {
+					text = "Mole." + source + " is ready. " + text;
+					server.getStatusPane().appendInfo(text);
+					listMoles.add(source);
+				}
+			} else if (data == 0x02) {
+				gunReady = true;
 			}
-			if (listMoles.size() >= numMoles) {
+			if (listMoles.size() >= numMoles && gunReady) {
 				stat = GameStat.RUNNING;
-				server.getStatusPane().appendInfo("Game starts.");
-				server.getStatusPane().appendInfo(level.getDetail());
-				this.sendMoleID();
+				this.startGame();
 			}
 			return;
 		} else if (type == 0x13) { // ACK: myTurn
@@ -109,6 +117,10 @@ public class GameThread implements Runnable, MessageListener {
 			}
 			this.sendMoleID();
 			currentTimes++;
+		} else if (type == 0x23 && stat == GameStat.RUNNING) {
+			totalPressedTime += data;
+			text = "This pressed time: " + data + ", total: " + totalPressedTime;
+			server.getStatusPane().appendInfo(text);
 		}
 		if (currentTimes >= totalTimes) {
 			this.sendGameOver();
@@ -129,6 +141,19 @@ public class GameThread implements Runnable, MessageListener {
 			timerWait.start();
 		} catch (Exception ioexc) {
 		}
+	}
+
+	public void startGame() {
+		GameMsg msg = new GameMsg();
+		try {
+			msg.set_type(0x12);
+			msg.set_data(0x00);
+			moteIF.send(MoteIF.TOS_BCAST_ADDR, msg);
+			server.getStatusPane().appendInfo("Game starts.");
+			server.getStatusPane().appendInfo(level.getDetail());
+		} catch (Exception ioexc) {
+		}
+		this.sendMoleID();
 	}
 
 	/**
@@ -175,6 +200,7 @@ public class GameThread implements Runnable, MessageListener {
 		text.append("Total Times: " + totalTimes + "\n");
 		text.append("Hit Times: " + hitTimes + "\n");
 		text.append("Result: " + result + "\n");
+		text.append("*********************\n");
 		try {
 			msg.set_type(0xFF);
 			msg.set_data(0x00);

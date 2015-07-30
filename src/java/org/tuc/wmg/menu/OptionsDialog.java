@@ -113,9 +113,10 @@ public class OptionsDialog extends JDialog implements ActionListener {
 		custPane.add(new JLabel("Timeout Mole:"));
 		timeMTF = new JTextField("5", 10);
 		custPane.add(timeMTF);
-		custPane.add(new JLabel("Number of Moles:"));
+		//custPane.add(new JLabel("Number of Moles:"));
 		molesTF = new JTextField("3", 10);
-		custPane.add(molesTF);
+		molesTF.setText("9");
+		//custPane.add(molesTF);
 		levelPane.add(levelP, BorderLayout.LINE_START);
 		levelPane.add(levelLabel, BorderLayout.CENTER);
 		mainPane.add(levelPane);
@@ -198,7 +199,7 @@ public class OptionsDialog extends JDialog implements ActionListener {
 		sb.append("<li>Total Times: <b>" + level.getTotalTimes() + "</b></li>");
 		sb.append("<li>Time moles: <b>" + level.getTimeoutMole() + "</b>s</li>");
 		sb.append("<li>Time server: <b>" + level.getTimeoutServer() + "</b>s</li>");
-		sb.append("<li>Number of Moles (Default): <b>" + level.getNumMoles() + "</b></li>");
+		//sb.append("<li>Number of Moles (Default): <b>" + level.getNumMoles() + "</b></li>");
 		sb.append("</ul></html>");
 		return sb.toString();
 	}

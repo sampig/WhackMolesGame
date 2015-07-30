@@ -13,7 +13,7 @@ import net.tinyos.packet.BuildSource;
 import net.tinyos.packet.PhoenixSource;
 import net.tinyos.util.PrintStreamMessenger;
 
-public class CheckMolesUtil implements MessageListener {
+public class CheckMolesUtil implements Runnable, MessageListener {
 
 	private ServerUI server;
 
@@ -35,6 +35,9 @@ public class CheckMolesUtil implements MessageListener {
 		moteIF.registerListener(new GameMsg(), this);
 	}
 
+	/**
+	 * Send ping to check the current available moles.
+	 */
 	public void sendRequest() {
 		countMoles = 0;
 		listMoles.clear();
@@ -47,16 +50,14 @@ public class CheckMolesUtil implements MessageListener {
 			Thread thread = new Thread() {
 				public void run() {
 					try {
-						Thread.sleep(3000);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 					server.getStatusPane().appendInfo("Current number of moles: " + countMoles);
+					server.setNumMoles(countMoles);
 					server.getLevel().setNumMoles(countMoles);
 					server.getStatusPane().initGamepane();
-					if (phoenixSource != null) {
-						phoenixSource.shutdown();
-					}
 				}
 			};
 			thread.start();
@@ -73,10 +74,28 @@ public class CheckMolesUtil implements MessageListener {
 		if (type == 0x11) { // ACK: ready
 			if (!listMoles.contains(source)) {
 				countMoles++;
-				String text = "Mole." + source + " is on. ";
+				String text = "Mole." + source + " is available. ";
 				server.getStatusPane().appendInfo(text);
 				listMoles.add(source);
 			}
+		}
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			this.sendRequest();
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void stop() {
+		if (phoenixSource != null) {
+			phoenixSource.shutdown();
 		}
 	}
 

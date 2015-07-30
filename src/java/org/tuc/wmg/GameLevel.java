@@ -159,7 +159,7 @@ public enum GameLevel {
 
 	public String getDetail() {
 		String str = "Total times: " + totalTimes + ", Timeout Server: " + timeoutServer + ", Timeout Mole: "
-				+ timeoutMole + ", Number of Moles: " + numMoles;
+				+ timeoutMole;// + ", Number of Moles: " + numMoles;
 		return str;
 	}
 

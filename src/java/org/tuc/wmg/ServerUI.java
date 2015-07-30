@@ -49,6 +49,9 @@ public class ServerUI extends JPanel {
 	private JLabel statusBar;
 
 	private GameLevel level = GameLevel.LEVEL_BEGINNER;
+	private int numMoles = 0;
+
+	private CheckMolesUtil cm;
 
 	private GameThread game;
 	private String source = "serial@/dev/ttyUSB0:115200";
@@ -69,6 +72,7 @@ public class ServerUI extends JPanel {
 		add(mainPane, BorderLayout.CENTER);
 		add(statusBar, BorderLayout.SOUTH);
 		installToolBar();
+		startCheckMoles();
 	}
 
 	public JFrame createFrame() {
@@ -137,15 +141,19 @@ public class ServerUI extends JPanel {
 		// change the UI.
 		updateTitle();
 		updateStatusBar("Running");
+		// stop checking.
+		stopCheckMoles();
 		// pop up a new dialog.
 		JFrame frame = (JFrame) SwingUtilities.windowForComponent(this);
 		if (frame != null) {
-			GamePlayWindow playDialog = new GamePlayWindow(this, frame);
-			playDialog.setModal(true);
-			int x = frame.getX() + (frame.getWidth() - playDialog.getWidth()) / 2;
-			int y = frame.getY() + (frame.getHeight() - playDialog.getHeight()) / 2;
-			playDialog.setLocation(x, y);
-			playDialog.setVisible(true);
+			GamePlayWindow playWindow = new GamePlayWindow(this);
+			// int x = frame.getX() + (frame.getWidth() - playWindow.getWidth())
+			// / 2;
+			// int y = frame.getY() + (frame.getHeight() -
+			// playWindow.getHeight()) / 2;
+			// playWindow.setLocation(x, y);
+			// playWindow.setVisible(true);
+			playWindow.startShow(frame);
 		}
 		// start receiving and sending messages.
 		if (source == null) {
@@ -168,6 +176,7 @@ public class ServerUI extends JPanel {
 			phoenixSource.shutdown();
 		}
 		isRunning = false;
+		getStatusPane().appendInfo("Game Stop.");
 		this.updateTitle();
 		updateStatusBar("Stopped");
 		if (game != null) {
@@ -190,10 +199,26 @@ public class ServerUI extends JPanel {
 			options.setVisible(true);
 		}
 	}
-	
-	public void checkMoles() {
-		CheckMolesUtil cm = new CheckMolesUtil(this);
-		cm.sendRequest();
+
+	/**
+	 * Start checking the number of current available moles.
+	 */
+	public void startCheckMoles() {
+		cm = new CheckMolesUtil(this);
+		Thread thread = new Thread(cm);
+		thread.start();
+	}
+
+	/**
+	 * Stop checking the number of current available moles.
+	 */
+	public void stopCheckMoles() {
+		if (cm != null) {
+			cm.stop();
+			Thread thread = new Thread(cm);
+			thread.interrupt();
+			cm = null;
+		}
 	}
 
 	public void about() {
@@ -245,6 +270,14 @@ public class ServerUI extends JPanel {
 
 	public GameStatusPane getStatusPane() {
 		return statusPane;
+	}
+
+	public int getNumMoles() {
+		return numMoles;
+	}
+
+	public void setNumMoles(int numMoles) {
+		this.numMoles = numMoles;
 	}
 
 	public static void main(String... strings) {

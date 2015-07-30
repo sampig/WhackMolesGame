@@ -84,7 +84,7 @@ public class ControlActions {
 		public void actionPerformed(ActionEvent e) {
 			ServerUI server = getServer(e);
 			if (server != null) {
-				server.checkMoles();
+				;// server.checkMoles();
 			}
 		}
 
