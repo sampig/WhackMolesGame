@@ -76,6 +76,9 @@ public class ControlActions {
 		}
 	}
 
+	/**
+	 * Action for start checking moles.
+	 */
 	public static class CheckMolesAction extends AbstractAction {
 
 		private static final long serialVersionUID = 5862640899617176382L;
@@ -84,7 +87,24 @@ public class ControlActions {
 		public void actionPerformed(ActionEvent e) {
 			ServerUI server = getServer(e);
 			if (server != null) {
-				;// server.checkMoles();
+				server.startCheckMoles();
+			}
+		}
+
+	}
+
+	/**
+	 * Action for clear Console.
+	 */
+	public static class ClearConsoleAction extends AbstractAction {
+
+		private static final long serialVersionUID = -7260483396813931610L;
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			ServerUI server = getServer(e);
+			if (server != null) {
+				server.getStatusPane().clearConsole();
 			}
 		}
 

@@ -13,6 +13,12 @@ import net.tinyos.packet.BuildSource;
 import net.tinyos.packet.PhoenixSource;
 import net.tinyos.util.PrintStreamMessenger;
 
+/**
+ * A utility for checking the available motes.
+ * 
+ * @author Chenfeng Zhu
+ *
+ */
 public class CheckMolesUtil implements Runnable, MessageListener {
 
 	private ServerUI server;
@@ -70,13 +76,18 @@ public class CheckMolesUtil implements Runnable, MessageListener {
 		GameMsg msg = (GameMsg) message;
 		int source = message.getSerialPacket().get_header_src();
 		int type = msg.get_type();
-		// int data = msg.get_data();
+		int data = msg.get_data();
 		if (type == 0x11) { // ACK: ready
-			if (!listMoles.contains(source)) {
-				countMoles++;
-				String text = "Mole." + source + " is available. ";
+			if (data == 0x01) {
+				if (!listMoles.contains(source)) {
+					countMoles++;
+					String text = "Mole." + source + " is available. ";
+					server.getStatusPane().appendInfo(text);
+					listMoles.add(source);
+				}
+			} else if (data == 0x02) {
+				String text = "Gun is available. ";
 				server.getStatusPane().appendInfo(text);
-				listMoles.add(source);
 			}
 		}
 	}
@@ -93,6 +104,9 @@ public class CheckMolesUtil implements Runnable, MessageListener {
 		}
 	}
 
+	/**
+	 * Stop listening.
+	 */
 	public void stop() {
 		if (phoenixSource != null) {
 			phoenixSource.shutdown();

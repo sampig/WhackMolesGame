@@ -105,8 +105,8 @@ public class GameThread implements Runnable, MessageListener {
 		} else if (type == 0x13) { // ACK: myTurn
 			server.getStatusPane().appendInfo("Mole." + source + " came out. " + text);
 			return;
-		} else if (type == 0x22 && stat == GameStat.RUNNING) { // Result:
-																// 0-miss;1-hit
+		} else if (type == 0x22 && stat == GameStat.RUNNING) { // Result: 0-miss;1-hit
+			currentTimes++;
 			this.sendStatReply(source);
 			boolean stat = (data == 0x01);
 			text = "Mole." + source + " stat: " + (stat ? "hit" : "miss") + ". " + text;
@@ -116,13 +116,12 @@ public class GameThread implements Runnable, MessageListener {
 				// server.getStatusPane().freshGamepane(-1, stat);
 			}
 			this.sendMoleID();
-			currentTimes++;
 		} else if (type == 0x23 && stat == GameStat.RUNNING) {
 			totalPressedTime += data;
 			text = "This pressed time: " + data + ", total: " + totalPressedTime;
 			server.getStatusPane().appendInfo(text);
 		}
-		if (currentTimes >= totalTimes) {
+		if (currentTimes > totalTimes) {
 			this.sendGameOver();
 			return;
 		}
@@ -160,7 +159,7 @@ public class GameThread implements Runnable, MessageListener {
 	 * Choose one of the moles.
 	 */
 	public void sendMoleID() {
-		server.getStatusPane().freshGamepane(-1, false);
+		server.getStatusPane().refreshGamepane(-1, false);
 		try {
 			Thread.sleep((long) (timeoutServer * 1000));
 		} catch (InterruptedException e) {
@@ -174,7 +173,7 @@ public class GameThread implements Runnable, MessageListener {
 			msg.set_data(listMoles.get(id));
 			moteIF.send(MoteIF.TOS_BCAST_ADDR, msg);
 			server.getStatusPane().appendInfo("It is the turn of Mole." + listMoles.get(id));
-			server.getStatusPane().freshGamepane(id, false);
+			server.getStatusPane().refreshGamepane(id, false);
 		} catch (Exception ioexc) {
 		}
 	}

@@ -13,6 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+/**
+ * 
+ * @author Chenfeng Zhu
+ *
+ */
 public class GameStatusPane extends JPanel {
 
 	private static final long serialVersionUID = 1935065644500091308L;
@@ -64,6 +69,9 @@ public class GameStatusPane extends JPanel {
 		sourceInfo.setText(text);
 	}
 
+	/**
+	 * Initialize.
+	 */
 	public void initGamepane() {
 		listMoles.clear();
 		gamePane.removeAll();
@@ -85,7 +93,13 @@ public class GameStatusPane extends JPanel {
 		gamePane.repaint();
 	}
 
-	public void freshGamepane(int num, boolean hit) {
+	/**
+	 * Refresh the game panel.
+	 * 
+	 * @param num
+	 * @param hit
+	 */
+	public void refreshGamepane(int num, boolean hit) {
 		for (int i = 0; i < listMoles.size(); i++) {
 			JLabel label = listMoles.get(i);
 			if (i == num) {
@@ -113,7 +127,7 @@ public class GameStatusPane extends JPanel {
 	}
 
 	/**
-	 * Update the Information.
+	 * Update the Console. Add new information.
 	 * 
 	 * @param text
 	 */
@@ -121,6 +135,13 @@ public class GameStatusPane extends JPanel {
 		infoTextArea.append(text + "\n");
 		infoPane.validate();
 		infoPane.getVerticalScrollBar().setValue(infoPane.getVerticalScrollBar().getMaximum());
+	}
+
+	/**
+	 * Clear the console.
+	 */
+	public void clearConsole() {
+		infoTextArea.setText("");
 	}
 
 }

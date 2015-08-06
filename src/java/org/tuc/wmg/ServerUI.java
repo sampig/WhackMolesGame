@@ -6,6 +6,7 @@ package org.tuc.wmg;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -24,6 +25,7 @@ import org.tuc.wmg.menu.ControlMenuBar;
 import org.tuc.wmg.menu.ControlToolBar;
 import org.tuc.wmg.menu.OptionsDialog;
 import org.tuc.wmg.utils.CheckMolesUtil;
+import org.tuc.wmg.utils.USBDetectionUtil;
 
 import net.tinyos.message.MoteIF;
 import net.tinyos.packet.BuildSource;
@@ -72,7 +74,10 @@ public class ServerUI extends JPanel {
 		add(mainPane, BorderLayout.CENTER);
 		add(statusBar, BorderLayout.SOUTH);
 		installToolBar();
-		startCheckMoles();
+		if (detectUSB()) {
+			startCheckMoles();
+		}
+
 	}
 
 	public JFrame createFrame() {
@@ -197,6 +202,28 @@ public class ServerUI extends JPanel {
 			int y = frame.getY() + (frame.getHeight() - options.getHeight()) / 2;
 			options.setLocation(x, y);
 			options.setVisible(true);
+		}
+	}
+
+	/**
+	 * Detect the available ttyUSB connection. If there is at least one, set the
+	 * first one as the source.
+	 * 
+	 * @return <true> if at least one available.
+	 */
+	public boolean detectUSB() {
+		getStatusPane().appendInfo("Detecting USB...");
+		List<String> list = USBDetectionUtil.getAvailableUSB();
+		for (String usb : list) {
+			getStatusPane().appendInfo("Available: " + usb);
+		}
+		if (list.size() > 0) {
+			getStatusPane().appendInfo("Source: " + source);
+			source = "serial@" + list.get(0) + ":115200";
+			return true;
+		} else {
+			getStatusPane().appendInfo("No BaseStation detected. Please check again.");
+			return false;
 		}
 	}
 
