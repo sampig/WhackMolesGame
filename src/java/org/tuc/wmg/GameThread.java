@@ -95,6 +95,8 @@ public class GameThread implements Runnable, MessageListener {
 					listMoles.add(source);
 				}
 			} else if (data == 0x02) {
+				text = "Gun is available. " + text;
+				server.getStatusPane().appendInfo(text);
 				gunReady = true;
 			}
 			if (listMoles.size() >= numMoles && gunReady) {
@@ -105,7 +107,8 @@ public class GameThread implements Runnable, MessageListener {
 		} else if (type == 0x13) { // ACK: myTurn
 			server.getStatusPane().appendInfo("Mole." + source + " came out. " + text);
 			return;
-		} else if (type == 0x22 && stat == GameStat.RUNNING) { // Result: 0-miss;1-hit
+		} else if (type == 0x22 && stat == GameStat.RUNNING) { // Result:
+																// 0-miss;1-hit
 			currentTimes++;
 			this.sendStatReply(source);
 			boolean stat = (data == 0x01);
@@ -178,6 +181,12 @@ public class GameThread implements Runnable, MessageListener {
 		}
 	}
 
+	/**
+	 * After receiving information of the status, reply with this.
+	 * 
+	 * @param source
+	 *            moteID
+	 */
 	public void sendStatReply(int source) {
 		GameMsg msg = new GameMsg();
 		try {
@@ -188,6 +197,9 @@ public class GameThread implements Runnable, MessageListener {
 		}
 	}
 
+	/**
+	 * Game over. Print the results on the
+	 */
 	public void sendGameOver() {
 		GameMsg msg = new GameMsg();
 		double result = (hitTimes * 1.0 / totalTimes);

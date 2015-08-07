@@ -13,7 +13,7 @@ public class GameRankPane extends JScrollPane {
     private static final long serialVersionUID = -4048211434815208714L;
 
     private JList<Object> jlistRank;
-    private List<Rank> listRank = new ArrayList<Rank>(0);
+    private List<Record> listRank = new ArrayList<Record>(0);
 
     public GameRankPane(ServerUI server) {
         jlistRank = new JList<Object>();
@@ -26,21 +26,21 @@ public class GameRankPane extends JScrollPane {
     }
 
     public void init() {
-        listRank.add(new Rank("Demo1", Math.random()));
-        listRank.add(new Rank("Demo2", Math.random()));
-        listRank.add(new Rank("Demo3", Math.random()));
+        listRank.add(new Record("Demo1", Math.random()));
+        listRank.add(new Record("Demo2", Math.random()));
+        listRank.add(new Record("Demo3", Math.random()));
         Collections.sort(listRank,Collections.reverseOrder());
         jlistRank.setListData(listRank.toArray());
     }
 
-    public void insertNewResult(Rank rank) {
+    public void insertNewResult(Record rank) {
         listRank.add(rank);
         Collections.sort(listRank,Collections.reverseOrder());
         jlistRank.setListData(listRank.toArray());
     }
 
     public void insertNewResult(String name, double result, int hitTimes, int totalTimes) {
-        Rank rank = new Rank(name, result, hitTimes, totalTimes);
+        Record rank = new Record(name, result, hitTimes, totalTimes);
         this.insertNewResult(rank);
     }
 
@@ -50,24 +50,24 @@ public class GameRankPane extends JScrollPane {
      * @author Chenfeng ZHU
      *
      */
-    public class Rank implements Comparable<Rank> {
+    public class Record implements Comparable<Record> {
         private String name;
         private double result;
         private int hitTimes;
         private int totalTimes;
         private int id = 0;
 
-        public Rank() {
+        public Record() {
             name = "Noname" + id;
         }
 
-        public Rank(String name, double result) {
+        public Record(String name, double result) {
             super();
             this.name = name;
             this.result = result;
         }
 
-        public Rank(String name, double result, int hitTimes, int totalTimes) {
+        public Record(String name, double result, int hitTimes, int totalTimes) {
             super();
             this.name = name;
             this.result = result;
@@ -108,7 +108,7 @@ public class GameRankPane extends JScrollPane {
         }
 
         @Override
-        public int compareTo(Rank o) {
+        public int compareTo(Record o) {
             if (this.result - o.result > 0) {
                 return 1;
             } else if (this.result - o.result < 0) {

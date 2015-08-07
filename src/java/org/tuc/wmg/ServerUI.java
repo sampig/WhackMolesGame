@@ -191,6 +191,9 @@ public class ServerUI extends JPanel {
 			System.gc();
 			// Thread.currentThread().interrupt();
 		}
+		if (detectUSB()) {
+			startCheckMoles();
+		}
 	}
 
 	public void options() {
