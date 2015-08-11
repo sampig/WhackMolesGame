@@ -195,7 +195,7 @@ public class GameThread implements Runnable, MessageListener {
     public void sendStatReply(int source) {
         GameMsg msg = new GameMsg();
         try {
-            msg.set_type(0x14);
+            msg.set_type(Msg.ACK_STATUS);
             msg.set_data(source);
             moteIF.send(source, msg);
         } catch (Exception ioexc) {
@@ -226,7 +226,7 @@ public class GameThread implements Runnable, MessageListener {
         }
         server.getRankPane().insertNewResult(server.getPlayerName(), result, hitTimes, totalTimes);
         stat = GameStat.OVER;
-        server.stop();
+        server.gameStop();
     }
 
     public class TimerThread extends Thread {

@@ -26,9 +26,9 @@ public class GameRankPane extends JScrollPane {
     }
 
     public void init() {
-        listRank.add(new Record("Demo1", Math.random()));
-        listRank.add(new Record("Demo2", Math.random()));
-        listRank.add(new Record("Demo3", Math.random()));
+        listRank.add(new Record("Demo1", 0.5));
+        listRank.add(new Record("Demo2", 0.2));
+        listRank.add(new Record("Demo3", 0.7));
         Collections.sort(listRank,Collections.reverseOrder());
         jlistRank.setListData(listRank.toArray());
     }

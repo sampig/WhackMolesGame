@@ -1,3 +1,7 @@
+/*
+ * AboutDialog - This file is part of Whack-Mole-Game
+ * Copyright (C) 2015 - Chenfeng ZHU
+ */
 package org.tuc.wmg.menu;
 
 import java.awt.BorderLayout;
@@ -31,7 +35,7 @@ public class AboutDialog extends JDialog {
         setTitle("About Whack Moles Game");
         setLayout(new BorderLayout());
 
-        // Title and subtitle
+        // Title and subtitle Panel
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY),
@@ -48,7 +52,7 @@ public class AboutDialog extends JDialog {
         titlePanel.add(subtitleLabel, BorderLayout.CENTER);
         getContentPane().add(titlePanel, BorderLayout.NORTH);
 
-        // Content
+        // Content Panel
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         content.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
@@ -60,7 +64,7 @@ public class AboutDialog extends JDialog {
         content.add(new JLabel(" "));
         getContentPane().add(content, BorderLayout.CENTER);
 
-        // Button
+        // Button Panel
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         buttonPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 0, 0, Color.GRAY),

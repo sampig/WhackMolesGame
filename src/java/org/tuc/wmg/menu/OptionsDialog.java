@@ -1,3 +1,7 @@
+/*
+ * OptionsDialog - This file is part of Whack-Mole-Game
+ * Copyright (C) 2015 - Chenfeng ZHU
+ */
 package org.tuc.wmg.menu;
 
 import java.awt.BorderLayout;
@@ -21,6 +25,12 @@ import javax.swing.JTextField;
 import org.tuc.wmg.GameLevel;
 import org.tuc.wmg.ServerUI;
 
+/**
+ * The Option Dialog for configuration.
+ * 
+ * @author Chenfeng Zhu
+ *
+ */
 public class OptionsDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 7515353703362196237L;
@@ -105,18 +115,18 @@ public class OptionsDialog extends JDialog implements ActionListener {
 		custPane = new JPanel();
 		custPane.setLayout(new GridLayout(0, 2));
 		custPane.add(new JLabel("Total Times:"));
-		numTF = new JTextField("10", 10);
+		numTF = new JTextField("10", 5);
 		custPane.add(numTF);
 		custPane.add(new JLabel("Timeout Server:"));
-		timeSTF = new JTextField("5", 10);
+		timeSTF = new JTextField("5", 5);
 		custPane.add(timeSTF);
 		custPane.add(new JLabel("Timeout Mole:"));
-		timeMTF = new JTextField("5", 10);
+		timeMTF = new JTextField("5", 5);
 		custPane.add(timeMTF);
-		//custPane.add(new JLabel("Number of Moles:"));
-		molesTF = new JTextField("3", 10);
+		// custPane.add(new JLabel("Number of Moles:"));
+		molesTF = new JTextField("3", 5);
 		molesTF.setText("9");
-		//custPane.add(molesTF);
+		// custPane.add(molesTF);
 		levelPane.add(levelP, BorderLayout.LINE_START);
 		levelPane.add(levelLabel, BorderLayout.CENTER);
 		mainPane.add(levelPane);
@@ -135,14 +145,14 @@ public class OptionsDialog extends JDialog implements ActionListener {
 				String source = sourceTF.getText();
 				server.setSource(source);
 				server.getStatusPane().updateSourceInfo(source);
-				server.setLevel(level);
-				server.setPlayerName(nameTF.getText());
 				server.getStatusPane().appendInfo("Change Game Level: " + level);
 				if (level == GameLevel.LEVEL_CUSTOM) {
 					level.setCustom(Integer.parseInt(numTF.getText()), Integer.parseInt(timeSTF.getText()),
 							Integer.parseInt(timeMTF.getText()), 9);
 					server.getStatusPane().appendInfo("\tDetails: " + level.getDetail());
 				}
+				server.setLevel(level);
+				server.setPlayerName(nameTF.getText());
 				server.getStatusPane().initGamepane();
 				setVisible(false);
 			}
@@ -193,13 +203,19 @@ public class OptionsDialog extends JDialog implements ActionListener {
 		levelPane.repaint();
 	}
 
+	/**
+	 * Get the details of level for Label.
+	 * 
+	 * @return a string for label.
+	 */
 	private String getLevelLabelString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("<html><ul>");
-		sb.append("<li>Total Times: <b>" + level.getTotalTimes() + "</b></li>");
-		sb.append("<li>Time moles: <b>" + level.getTimeoutMole() + "</b>s</li>");
-		sb.append("<li>Time server: <b>" + level.getTimeoutServer() + "</b>s</li>");
-		//sb.append("<li>Number of Moles (Default): <b>" + level.getNumMoles() + "</b></li>");
+		sb.append("<html>Level information: <ul>");
+		sb.append("<li>Total number of Times: <b>" + level.getTotalTimes() + "</b></li>");
+		sb.append("<li>Timeout-moles interval: <b>" + level.getTimeoutMole() + "</b>s</li>");
+		sb.append("<li>Timeout-server interval: <b>" + level.getTimeoutServer() + "</b>s</li>");
+		// sb.append("<li>Number of Moles (Default): <b>" + level.getNumMoles()
+		// + "</b></li>");
 		sb.append("</ul></html>");
 		return sb.toString();
 	}

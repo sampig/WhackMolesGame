@@ -1,3 +1,7 @@
+/*
+ * ControlActions - This file is part of Whack-Mole-Game
+ * Copyright (C) 2015 - Chenfeng ZHU
+ */
 package org.tuc.wmg.menu;
 
 import java.awt.Component;
@@ -16,6 +20,12 @@ import org.tuc.wmg.ServerUI;
  */
 public class ControlActions {
 
+	/**
+	 * Get the ServerUI from the event.
+	 * 
+	 * @param e
+	 * @return
+	 */
 	public static final ServerUI getServer(ActionEvent e) {
 		if (e.getSource() instanceof Component) {
 			Component component = (Component) e.getSource();
@@ -38,7 +48,7 @@ public class ControlActions {
 		public void actionPerformed(ActionEvent e) {
 			ServerUI server = getServer(e);
 			if (server != null) {
-				server.start();
+				server.gameStart();
 			}
 		}
 
@@ -77,17 +87,33 @@ public class ControlActions {
 	}
 
 	/**
-	 * Action for start checking moles.
+	 * Action for start/stop checking moles.
 	 */
 	public static class CheckMolesAction extends AbstractAction {
 
 		private static final long serialVersionUID = 5862640899617176382L;
+		private int operation;
+
+		public final static int START = 0;
+		public final static int STOP = 1;
+
+		public CheckMolesAction(int operation) {
+			super();
+			this.operation = operation;
+		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			ServerUI server = getServer(e);
 			if (server != null) {
-				server.startCheckMoles();
+				switch (operation) {
+				case START:
+					server.startCheckMoles();
+					break;
+				case STOP:
+					server.stopCheckMoles();
+					break;
+				}
 			}
 		}
 
@@ -121,7 +147,7 @@ public class ControlActions {
 		public void actionPerformed(ActionEvent e) {
 			ServerUI server = getServer(e);
 			if (server != null) {
-				server.stop();
+				server.gameStop();
 			}
 		}
 

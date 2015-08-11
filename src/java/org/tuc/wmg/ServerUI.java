@@ -49,6 +49,7 @@ public class ServerUI extends JPanel {
 	private GameRankPane rankPane;
 	private GameStatusPane statusPane;
 	private JLabel statusBar;
+	private GamePlayWindow playWindow;
 
 	private GameLevel level = GameLevel.LEVEL_BEGINNER;
 	private int numMoles = 0;
@@ -141,7 +142,10 @@ public class ServerUI extends JPanel {
 		return newAction;
 	}
 
-	public void start() {
+	/**
+	 * Start the game.
+	 */
+	public void gameStart() {
 		isRunning = true;
 		// change the UI.
 		updateTitle();
@@ -151,13 +155,7 @@ public class ServerUI extends JPanel {
 		// pop up a new dialog.
 		JFrame frame = (JFrame) SwingUtilities.windowForComponent(this);
 		if (frame != null) {
-			GamePlayWindow playWindow = new GamePlayWindow(this);
-			// int x = frame.getX() + (frame.getWidth() - playWindow.getWidth())
-			// / 2;
-			// int y = frame.getY() + (frame.getHeight() -
-			// playWindow.getHeight()) / 2;
-			// playWindow.setLocation(x, y);
-			// playWindow.setVisible(true);
+			playWindow = new GamePlayWindow(this);
 			playWindow.startShow(frame);
 		}
 		// start receiving and sending messages.
@@ -176,7 +174,10 @@ public class ServerUI extends JPanel {
 		this.level = level;
 	}
 
-	public void stop() {
+	/**
+	 * Stop the game.
+	 */
+	public void gameStop() {
 		if (phoenixSource != null) {
 			phoenixSource.shutdown();
 		}
@@ -188,14 +189,21 @@ public class ServerUI extends JPanel {
 			Thread thread = new Thread(game);
 			thread.interrupt();
 			game = null;
-			System.gc();
 			// Thread.currentThread().interrupt();
 		}
+		if (playWindow != null) {
+			playWindow.close();
+			playWindow = null;
+		}
+		System.gc();
 		if (detectUSB()) {
 			startCheckMoles();
 		}
 	}
 
+	/**
+	 * Pop up the Options Dialog.
+	 */
 	public void options() {
 		JFrame frame = (JFrame) SwingUtilities.windowForComponent(this);
 		if (frame != null) {
@@ -251,6 +259,9 @@ public class ServerUI extends JPanel {
 		}
 	}
 
+	/**
+	 * About Information.
+	 */
 	public void about() {
 		JFrame frame = (JFrame) SwingUtilities.windowForComponent(this);
 		if (frame != null) {
@@ -263,6 +274,9 @@ public class ServerUI extends JPanel {
 		}
 	}
 
+	/**
+	 * Program exits.
+	 */
 	public void exit() {
 		JFrame frame = (JFrame) SwingUtilities.windowForComponent(this);
 		if (frame != null) {

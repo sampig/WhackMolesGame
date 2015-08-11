@@ -1,3 +1,7 @@
+/*
+ * ControlToolBar - This file is part of Whack-Mole-Game
+ * Copyright (C) 2015 - Chenfeng ZHU
+ */
 package org.tuc.wmg.menu;
 
 import javax.swing.BorderFactory;

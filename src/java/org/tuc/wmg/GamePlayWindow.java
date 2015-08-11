@@ -15,6 +15,7 @@ public class GamePlayWindow extends JPanel {
 
 	private static final long serialVersionUID = -802653897422611115L;
 
+	private JFrame frame;
 	private JPanel infoPane, playPane, buttonPane;
 	private JLabel infoLabel;
 	private ServerUI server;
@@ -22,6 +23,7 @@ public class GamePlayWindow extends JPanel {
 	private List<JLabel> listLabelMoles = new ArrayList<>(0);
 
 	public GamePlayWindow(ServerUI server) {
+		super.setLayout(new BorderLayout());
 		this.server = server;
 		//
 		infoPane = new JPanel();
@@ -39,15 +41,21 @@ public class GamePlayWindow extends JPanel {
 	}
 
 	public void startShow(Frame owner) {
-		JFrame frame = new JFrame();
+		frame = new JFrame();
 		frame.getContentPane().add(this);
 //		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800, 600);
+		frame.setSize(600, 400);
 		int x = owner.getX() + (owner.getWidth() - this.getWidth()) / 2;
 		int y = owner.getY() + (owner.getHeight() - this.getHeight()) / 2;
 		this.setLocation(x, y);
 		this.setVisible(true);
 		frame.setVisible(true);
+	}
+	
+	public void close() {
+		if(frame!=null) {
+			frame.setVisible(false);
+		}
 	}
 
 	public JLabel createInfoLabel() {
