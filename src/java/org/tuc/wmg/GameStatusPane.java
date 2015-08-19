@@ -13,6 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.tuc.wmg.utils.Constants.MoleStatus;
+import org.tuc.wmg.utils.MoteInfo;
+
 /**
  * 
  * @author Chenfeng Zhu
@@ -28,7 +31,7 @@ public class GameStatusPane extends JPanel {
 	private JScrollPane infoPane;
 	private JTextArea infoTextArea;
 
-	private List<JLabel> listMoles = new ArrayList<>(0);
+	private List<JLabel> listMoleLabels = new ArrayList<>(0);
 
 	public GameStatusPane(final ServerUI server) {
 		this.server = server;
@@ -73,20 +76,21 @@ public class GameStatusPane extends JPanel {
 	 * Initialize.
 	 */
 	public void initGamepane() {
-		listMoles.clear();
+		listMoleLabels.clear();
 		gamePane.removeAll();
 		GridLayout layout = new GridLayout(0, 3);
 		gamePane.setLayout(layout);
-		int num = server.getLevel().getNumMoles();
+		int num = server.getNumMoles();
 		for (int i = 0; i < num; i++) {
 			java.net.URL imgURL = GameStatusPane.class.getClassLoader()
 					.getResource("resources/images/circle_red_48px.png");
 			ImageIcon iconRed = new ImageIcon(imgURL);
-			JLabel label = new JLabel("Mole." + i, JLabel.CENTER);
+			MoteInfo mote = server.getAvailableMoles().get(i);
+			JLabel label = new JLabel(i + mote.toString(), JLabel.CENTER);
 			label.setIcon(iconRed);
 			label.setVerticalTextPosition(JLabel.BOTTOM);
 			label.setHorizontalTextPosition(JLabel.CENTER);
-			listMoles.add(label);
+			listMoleLabels.add(label);
 			gamePane.add(label);
 		}
 		gamePane.revalidate();
@@ -96,28 +100,38 @@ public class GameStatusPane extends JPanel {
 	/**
 	 * Refresh the game panel.
 	 * 
-	 * @param num
+	 * @param mid
 	 * @param hit
 	 */
-	public void refreshGamepane(int num, boolean hit) {
-		for (int i = 0; i < listMoles.size(); i++) {
-			JLabel label = listMoles.get(i);
-			if (i == num) {
-				if (hit) {
-					label.setText("<<< Mole." + i + " >>>");
-					java.net.URL imgURL = GameStatusPane.class.getClassLoader()
-							.getResource("resources/images/circle_green_48px.png");
-					ImageIcon iconBlue = new ImageIcon(imgURL);
-					label.setIcon(iconBlue);
-				} else {
-					label.setText("*** Mole." + i + " ***");
-					java.net.URL imgURL = GameStatusPane.class.getClassLoader()
+	public void refreshGamePane(int mid, MoleStatus status) {
+		for (int i = 0; i < listMoleLabels.size(); i++) {
+			JLabel label = listMoleLabels.get(i);
+			MoteInfo mote = server.getAvailableMoles().get(i);
+			if (mote.getMid() == mid) {
+				java.net.URL imgURL;
+				switch (status) {
+				case OUT:
+					label.setText("*** " + i + mote + " ***");
+					imgURL = GameStatusPane.class.getClassLoader().getResource("resources/images/mole_48px.png");
+					ImageIcon iconMole = new ImageIcon(imgURL);
+					label.setIcon(iconMole);
+					break;
+				case HIT:
+					label.setText("+++ " + i + mote + " +++");
+					imgURL = GameStatusPane.class.getClassLoader()
 							.getResource("resources/images/circle_green_48px.png");
 					ImageIcon iconGreen = new ImageIcon(imgURL);
 					label.setIcon(iconGreen);
+					break;
+				case MISSING:
+					label.setText("--- " + i + mote + " ---");
+					imgURL = GameStatusPane.class.getClassLoader().getResource("resources/images/circle_blue_48px.png");
+					ImageIcon iconBlue = new ImageIcon(imgURL);
+					label.setIcon(iconBlue);
+					break;
 				}
 			} else {
-				label.setText("Mole." + i);
+				label.setText(i + mote.toString());
 				java.net.URL imgURL = GameStatusPane.class.getClassLoader()
 						.getResource("resources/images/circle_red_48px.png");
 				ImageIcon iconRed = new ImageIcon(imgURL);

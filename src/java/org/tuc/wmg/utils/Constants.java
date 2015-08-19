@@ -19,6 +19,13 @@ public abstract class Constants {
 	public final static int CHECK_WAIT_TIME = 1000;
 
 	/**
+	 * Status of a Mole.
+	 */
+	public enum MoleStatus {
+		OUT, HIT, MISSING
+	}
+
+	/**
 	 * Define all types and datas in all kinds of messages.
 	 *
 	 */

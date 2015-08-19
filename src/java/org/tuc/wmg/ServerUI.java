@@ -25,6 +25,7 @@ import org.tuc.wmg.menu.ControlMenuBar;
 import org.tuc.wmg.menu.ControlToolBar;
 import org.tuc.wmg.menu.OptionsDialog;
 import org.tuc.wmg.utils.CheckMolesUtil;
+import org.tuc.wmg.utils.MoteInfo;
 import org.tuc.wmg.utils.USBDetectionUtil;
 
 import net.tinyos.message.MoteIF;
@@ -44,6 +45,9 @@ public class ServerUI extends JPanel {
 
 	private String title = "Whack Moles Game";
 	private boolean isRunning = false;
+
+	private ControlMenuBar menuBar;
+	private ControlToolBar toolBar;
 
 	private JSplitPane mainPane;
 	private GameRankPane rankPane;
@@ -85,14 +89,16 @@ public class ServerUI extends JPanel {
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(this);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setJMenuBar(new ControlMenuBar(this));
+		menuBar = new ControlMenuBar(this);
+		frame.setJMenuBar(menuBar);
 		frame.setSize(800, 600);
 		updateTitle();
 		return frame;
 	}
 
 	private void installToolBar() {
-		add(new ControlToolBar(this, JToolBar.HORIZONTAL), BorderLayout.NORTH);
+		toolBar = new ControlToolBar(this, JToolBar.HORIZONTAL);
+		add(toolBar, BorderLayout.NORTH);
 	}
 
 	private JLabel createStatusBar() {
@@ -316,12 +322,37 @@ public class ServerUI extends JPanel {
 		return statusPane;
 	}
 
+	public GamePlayWindow getPlayWindow() {
+		return this.playWindow;
+	}
+
 	public int getNumMoles() {
 		return numMoles;
 	}
 
 	public void setNumMoles(int numMoles) {
 		this.numMoles = numMoles;
+	}
+
+	public void setReady(boolean ready) {
+		if (ready) {
+			;
+		} else {
+			;
+		}
+	}
+
+	public GameThread getCurrentGame() {
+		return game;
+	}
+
+	public List<MoteInfo> getAvailableMoles() {
+		if (cm != null) {
+			return cm.getListMoles();
+		} else if (game != null) {
+			return game.getListMoles();
+		}
+		return null;
 	}
 
 	public static void main(String... strings) {
