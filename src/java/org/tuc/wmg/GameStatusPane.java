@@ -31,7 +31,7 @@ public class GameStatusPane extends JPanel {
 	private JScrollPane infoPane;
 	private JTextArea infoTextArea;
 
-	private List<JLabel> listMoleLabels = new ArrayList<>(0);
+	private List<JLabel> listMoleLabels = new ArrayList<JLabel>(0);
 
 	public GameStatusPane(final ServerUI server) {
 		this.server = server;

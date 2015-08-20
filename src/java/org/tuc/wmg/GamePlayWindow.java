@@ -25,7 +25,7 @@ public class GamePlayWindow extends JPanel {
 	private JButton stopBtn;
 	private ServerUI server;
 
-	private List<JLabel> listLabelMoles = new ArrayList<>(0);
+	private List<JLabel> listLabelMoles = new ArrayList<JLabel>(0);
 
 	public GamePlayWindow(ServerUI server) {
 		super.setLayout(new BorderLayout());

@@ -132,7 +132,12 @@ public class GameThread implements Runnable, MessageListener {
 			server.getStatusPane().refreshGamePane(mote.getMid(), (stat ? MoleStatus.HIT : MoleStatus.MISSING));
 			server.getPlayWindow().updateInfoLabel();
 			server.getPlayWindow().refreshPlayPanel(mote.getMid(), (stat ? MoleStatus.HIT : MoleStatus.MISSING));
-			this.sendMoleID();
+			if (currentTimes > totalTimes) {
+				this.sendGameOver();
+				return;
+			} else {
+				this.sendMoleID();
+			}
 		} else if (type == Msg.TYPE_PRESS_DUR && stat == GameStat.RUNNING) {
 			// press time.
 			totalPressedTime += data;
