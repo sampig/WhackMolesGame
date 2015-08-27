@@ -242,7 +242,7 @@ public class GameThread implements Runnable, MessageListener {
 			server.getStatusPane().appendInfo(text.toString());
 		} catch (Exception ioexc) {
 		}
-		server.getRankPane().insertNewResult(server.getPlayerName(), result, hitTimes, totalTimes);
+		server.getRankPane().insertNewResult(server.getPlayerName(), result, hitTimes, totalTimes, totalPressedTime);
 		stat = GameStat.OVER;
 		server.gameStop();
 	}
