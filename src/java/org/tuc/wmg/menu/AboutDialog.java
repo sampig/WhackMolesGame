@@ -60,7 +60,7 @@ public class AboutDialog extends JDialog {
         content.add(new JLabel(" "));
         content.add(new JLabel("Version 1.0"));
         content.add(new JLabel("Copyright (C) 2015 by TUC."));
-        content.add(new JLabel("Developer 2015 by Chenfeng Zhu."));
+        content.add(new JLabel("Developed by Chenfeng Zhu."));
         content.add(new JLabel("All rights reserved."));
         content.add(new JLabel(" "));
         getContentPane().add(content, BorderLayout.CENTER);
