@@ -46,7 +46,7 @@ public class AboutDialog extends JDialog {
         titleLabel.setOpaque(false);
         titlePanel.add(titleLabel, BorderLayout.NORTH);
         JLabel subtitleLabel = new JLabel(
-                "For more info https://github.com/sampig/WhackMolesGame");
+                "<html>For more info<br/> https://github.com/sampig/WhackMolesGame</html>");
         subtitleLabel.setBorder(BorderFactory.createEmptyBorder(4, 18, 0, 0));
         subtitleLabel.setOpaque(false);
         titlePanel.add(subtitleLabel, BorderLayout.CENTER);
@@ -60,6 +60,7 @@ public class AboutDialog extends JDialog {
         content.add(new JLabel(" "));
         content.add(new JLabel("Version 1.0"));
         content.add(new JLabel("Copyright (C) 2015 by TUC."));
+        content.add(new JLabel("Developer 2015 by Chenfeng Zhu."));
         content.add(new JLabel("All rights reserved."));
         content.add(new JLabel(" "));
         getContentPane().add(content, BorderLayout.CENTER);
