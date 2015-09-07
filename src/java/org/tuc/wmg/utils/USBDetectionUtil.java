@@ -1,3 +1,7 @@
+/*
+ * USBDetectionUtil - This file is part of Whack-Mole-Game
+ * Copyright (C) 2015 - Chenfeng ZHU
+ */
 package org.tuc.wmg.utils;
 
 import java.io.BufferedReader;
@@ -45,6 +49,8 @@ public abstract class USBDetectionUtil {
             cmd = new String[] { "bash", "-c", "ls /dev/ttyU*" };
             break;
         }
+        // if tinyos has been installed in windows, this line could be removed.
+        cmd = new String[] { "bash", "-c", "ls /dev/ttyU*" };
         try {
             ProcessBuilder pb = new ProcessBuilder(cmd);
             Process p = pb.start();

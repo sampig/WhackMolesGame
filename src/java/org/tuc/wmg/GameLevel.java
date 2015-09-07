@@ -1,3 +1,7 @@
+/*
+ * GameLevel - This file is part of Whack-Mole-Game
+ * Copyright (C) 2015 - Chenfeng ZHU
+ */
 package org.tuc.wmg;
 
 import java.util.Random;
